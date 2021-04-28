@@ -1,5 +1,6 @@
 from random import randint
 import numpy as np
+from keras.layers import Flatten
 from sklearn.utils import shuffle
 from sklearn.preprocessing import MinMaxScaler
 import tensorflow as tf
@@ -7,6 +8,7 @@ from tensorflow import keras
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Activation, Dense
 from tensorflow.keras.optimizers import Adam
+from keras.layers.convolutional import *
 
 # from tensorflow.keras.metrics import categorical_crossentropy
 
@@ -101,6 +103,25 @@ def simple_model():
         verbose=2)
     return model
 
+def conv_sequential():
+    model_valid = Sequential([
+        Dense(16, activation='relu', input_shape=(20,20,3)),
+        Conv2D(32, kernel_size=(3, 3), activation='relu', padding='valid'),
+        Conv2D(64, kernel_size=(5, 5), activation='relu', padding='valid'),
+        Conv2D(128, kernel_size=(7, 7), activation='relu', padding='valid'),
+        Flatten(),
+        Dense(2, activation='softmax'),
+    ])
+    model_same = Sequential([
+        Dense(16, activation='relu', input_shape=(20,20,3)),
+        Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'),
+        Conv2D(64, kernel_size=(5, 5), activation='relu', padding='same'),
+        Conv2D(128, kernel_size=(7, 7), activation='relu', padding='same'),
+        Flatten(),
+        Dense(2, activation='softmax'),
+    ])
+    print(model_valid.summary())
+    print(model_same.summary())
 
 def predict(model):
     predictions = model.predict(scaled_test_samples, batch_size=10, verbose=0)
@@ -110,3 +131,5 @@ def predict(model):
 
 simple_model = simple_model()
 predict(simple_model)
+
+conv_sequential()
