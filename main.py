@@ -103,9 +103,10 @@ def simple_model():
         verbose=2)
     return model
 
+
 def conv_sequential():
     model_valid = Sequential([
-        Dense(16, activation='relu', input_shape=(20,20,3)),
+        Dense(16, activation='relu', input_shape=(20, 20, 3)),
         Conv2D(32, kernel_size=(3, 3), activation='relu', padding='valid'),
         Conv2D(64, kernel_size=(5, 5), activation='relu', padding='valid'),
         Conv2D(128, kernel_size=(7, 7), activation='relu', padding='valid'),
@@ -113,7 +114,7 @@ def conv_sequential():
         Dense(2, activation='softmax'),
     ])
     model_same = Sequential([
-        Dense(16, activation='relu', input_shape=(20,20,3)),
+        Dense(16, activation='relu', input_shape=(20, 20, 3)),
         Conv2D(32, kernel_size=(3, 3), activation='relu', padding='same'),
         Conv2D(64, kernel_size=(5, 5), activation='relu', padding='same'),
         Conv2D(128, kernel_size=(7, 7), activation='relu', padding='same'),
@@ -122,6 +123,15 @@ def conv_sequential():
     ])
     print(model_valid.summary())
     print(model_same.summary())
+
+# Weight initialization helps prevent exploding and vanishing gradient problems.
+def weight_initialization_model():
+    model = Sequential([
+        Dense(16, input_shape=(1, 5), activation='relu'),
+        Dense(32, activation='relu', kernel_initializer='glorot_uniform'),  # Xavier initialization. The default.
+        Dense(2, activation='softmax')
+    ])
+
 
 def predict(model):
     predictions = model.predict(scaled_test_samples, batch_size=10, verbose=0)
