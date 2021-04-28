@@ -124,12 +124,21 @@ def conv_sequential():
     print(model_valid.summary())
     print(model_same.summary())
 
+
 # Weight initialization helps prevent exploding and vanishing gradient problems.
 def weight_initialization_model():
     model = Sequential([
         Dense(16, input_shape=(1, 5), activation='relu'),
         Dense(32, activation='relu', kernel_initializer='glorot_uniform'),  # Xavier initialization. The default.
         Dense(2, activation='softmax')
+    ])
+
+
+def regularization_model():
+    model = Sequential ([
+        Dense(16, input_shape=(1,), activation='relu'),
+        Dense(32, activation='relu', kernel_regularizer=regularizers.l2(0.01)),
+        Dense(2, activation='sigmoid')
     ])
 
 
